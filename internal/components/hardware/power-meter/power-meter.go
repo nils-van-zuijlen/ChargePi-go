@@ -9,6 +9,7 @@ import (
 // Supported power meters
 const (
 	TypeC5460A = "cs5460a"
+	TypeINA219 = "ina219"
 )
 
 var (
@@ -42,6 +43,8 @@ func NewPowerMeter(meterSettings settings.PowerMeter) (PowerMeter, error) {
 				meterSettings.ShuntOffset,
 				meterSettings.VoltageDividerOffset,
 			)
+		case TypeINA219:
+			return NewINA219PowerMeter(meterSettings.PowerMeterAddress, meterSettings.ResistorValue, meterSettings.MaxCurrent)
 		default:
 			return nil, ErrPowerMeterUnsupported
 		}

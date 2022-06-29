@@ -38,4 +38,6 @@ require (
 	google.golang.org/grpc v1.45.0
 	google.golang.org/protobuf v1.28.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
+	periph.io/x/conn/v3/driver/driverreg v3.6.10
+	periph.io/x/devices/v3/ina219 v3.6.15
 )

@@ -45,6 +45,9 @@ type (
 		Consumption          float64 `fig:"Consumption" json:"consumption,omitempty" yaml:"consumption" mapstructure:"consumption"`
 		ShuntOffset          float64 `fig:"ShuntOffset" json:"ShuntOffset,omitempty" yaml:"ShuntOffset" mapstructure:"ShuntOffset"`
 		VoltageDividerOffset float64 `fig:"VoltageDividerOffset" json:"VoltageDividerOffset,omitempty" yaml:"VoltageDividerOffset" mapstructure:"VoltageDividerOffset"`
+		PowerMeterAddress    int     `fig:"PowerMeterAddress" default:"64" json:"PowerMeterAddress,omitempty" yaml:"PowerMeterAddress" mapstructure:"PowerMeterAddress"`
+		ResistorValue        int     `fig:"ResistorValue" default:"100" json:"ResistorValueMilliOhm,omitempty" yaml:"ResistorValueMilliOhm" mapstructure:"ResistorValueMilliOhm"`
+		MaxCurrent           int     `fig:"MaxCurrent" default:"3200" json:"MaxCurrentMilliAmp,omitempty" yaml:"MaxCurrentMilliAmp" mapstructure:"MaxCurrentMilliAmp"`
 	}
 
 	PowerMeters struct {

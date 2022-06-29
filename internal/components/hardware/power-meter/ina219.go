@@ -17,7 +17,7 @@ type INA219 struct {
 	LastMeasurement time.Time
 }
 
-func NewINA219PowerMeter(address int, senseResistorMilliOhm int, maxCurrentMilliAmp int) (*INA219, error) {
+func NewINA219PowerMeter(address int, senseResistorMilliOhm int64, maxCurrentMilliAmp int64) (*INA219, error) {
 	if _, err := driverreg.Init(); err != nil {
 		return nil, err
 	}
@@ -28,8 +28,8 @@ func NewINA219PowerMeter(address int, senseResistorMilliOhm int, maxCurrentMilli
 		return nil, err
 	}
 
-	var opts = ina219.Opts{Address: address, SenseResistor: senseResistorMilliOhm * physic.MilliOhm, MaxCurrent: maxCurrentMilliAmp * physic.MilliAmpere,}
-	device, err := ina219.New(b, opts)
+	var opts = ina219.Opts{Address: address, SenseResistor: physic.ElectricResistance(senseResistorMilliOhm) * physic.MilliOhm, MaxCurrent: physic.ElectricCurrent(maxCurrentMilliAmp) * physic.MilliAmpere,}
+	device, err := ina219.New(b, &opts)
 	if err != nil {
 		return nil, err
 	}
@@ -40,12 +40,12 @@ func NewINA219PowerMeter(address int, senseResistorMilliOhm int, maxCurrentMilli
 func (receiver *INA219) Reset() {
 }
 
-func (receiver *INA219) sense() (ina219.PowerMonitor) {
+func (receiver *INA219) sense() (*ina219.PowerMonitor) {
 	var p, err = receiver.Device.Sense()
 	if err != nil {
 		return nil
 	}
-	return p
+	return &p
 }
 
 func (receiver *INA219) GetEnergy() float64 {
@@ -54,10 +54,10 @@ func (receiver *INA219) GetEnergy() float64 {
 	now := time.Now()
 	dt := receiver.LastMeasurement.Sub(now)
 
-	dE := p.Power * dt.Seconds()
+	dE := float64(p.Power) * dt.Seconds()
 
 	receiver.LastMeasurement = now
-	return float64(dE)
+	return dE
 }
 func (receiver *INA219) GetPower() float64 {
 	p := receiver.sense()

@@ -29,7 +29,10 @@ func NewINA219PowerMeter(address int, senseResistorMilliOhm int, maxCurrentMilli
 	}
 
 	var opts = ina219.Opts{Address: address, SenseResistor: senseResistorMilliOhm * physic.MilliOhm, MaxCurrent: maxCurrentMilliAmp * physic.MilliAmpere,}
-	var device = ina219.New(b, opts)
+	device, err := ina219.New(b, opts)
+	if err != nil {
+		return nil, err
+	}
 	var powerMeter = INA219{Device: device, LastMeasurement: time.Now()}
 	return &powerMeter, nil
 }
